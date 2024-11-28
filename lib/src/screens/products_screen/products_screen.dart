@@ -36,35 +36,40 @@ class _ProductsScreenState extends State<ProductsScreen> {
       value: productsScreenStore,
       child: Builder(
         builder: (context) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(LanguageMap.lngMap['psTitle']),
-              centerTitle: true,
-              actions: [
-                const IconsChangeSortingWidget(),
-                IconButton(
-                  onPressed: () => context.push(AppRouter.pathProfileScreen),
-                  icon: const Icon(Icons.person),
-                ),
-                IconButton(
-                  onPressed: () => context.read<AuthCubit>().logout(),
-                  icon: const Icon(Icons.exit_to_app),
-                ),
-                const SizedBox(width: 20),
-              ],
-            ),
-            body: AppContainerWidhthWidget(
-              child: Observer(
-                builder: (context) {
-                  return switch (productsScreenStore.stateStore) {
-                    (StateProductsStoreLoading()) =>
-                      Center(child: Text(LanguageMap.lngMap['psloadingText'])),
-                    (StateProductsStoreOk()) => const ProductsBodyWidget(),
-                    _ => Center(child: Text(LanguageMap.lngMap['psErrorText'])),
-                  };
-                },
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                title: Text(LanguageMap.lngMap['psTitle']),
+                centerTitle: true,
+                actions: [
+                  const IconsChangeSortingWidget(),
+                  IconButton(
+                    onPressed: () => context.push(AppRouter.pathProfileScreen),
+                    icon: const Icon(Icons.person),
+                  ),
+                  IconButton(
+                    onPressed: () => context.read<AuthCubit>().logout(),
+                    icon: const Icon(Icons.exit_to_app),
+                  ),
+                  const SizedBox(width: 20),
+                ],
               ),
-            ),
+              SliverToBoxAdapter(
+                child: AppContainerWidhthWidget(
+                  child: Observer(
+                    builder: (context) {
+                      return switch (productsScreenStore.stateStore) {
+                        (StateProductsStoreLoading()) => Center(
+                            child: Text(LanguageMap.lngMap['psloadingText'])),
+                        (StateProductsStoreOk()) => const ProductsBodyWidget(),
+                        _ => Center(
+                            child: Text(LanguageMap.lngMap['psErrorText'])),
+                      };
+                    },
+                  ),
+                ),
+              )
+            ],
           );
         },
       ),
