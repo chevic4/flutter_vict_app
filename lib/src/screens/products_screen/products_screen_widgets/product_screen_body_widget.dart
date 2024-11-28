@@ -16,6 +16,7 @@ class ProductsBodyWidget extends StatelessWidget {
         ? Text(LanguageMap.lngMap['psEmptyListText'])
         : Observer(builder: (_) {
             return ListView.builder(
+              shrinkWrap: true,
               itemCount: productsScreenStore.listProducts.length,
               itemBuilder: (context, itemCount) => Padding(
                 padding: const EdgeInsets.all(16.0),
